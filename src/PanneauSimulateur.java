@@ -13,8 +13,8 @@ public class PanneauSimulateur extends JFrame {
 	private int voiturex = 30;
 	private static final int D_W = 1100;
     private static final int D_H = 628;
-    int x = 30;
-    int y = 245;
+    int x = 0;
+    int y = 247;
     
     
 	private Thread thread = new Thread();
@@ -55,8 +55,8 @@ public class PanneauSimulateur extends JFrame {
 			Image img = ImageIO.read(new File("map.jpg"));
 			
 	        g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
-            g.setColor(Color.GREEN);
-            g.fillRect(x, y, 30, 15);
+            g.setColor(Color.red);
+            g.fillRect(x, y, 23, 10);
             
 			} catch (IOException e) {
 
