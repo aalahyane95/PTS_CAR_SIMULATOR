@@ -4,35 +4,73 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class PanneauSimulateur extends JPanel {
+public class PanneauSimulateur extends JFrame {
 	
 	private int voiturex = 30;
-	
+	private static final int D_W = 1100;
+    private static final int D_H = 628;
+    int x = 30;
+    int y = 245;
+    
+    
 	private Thread thread = new Thread();
 	
 	private Image voiture = new ImageIcon("voiture.png").getImage();
+	DrawPanel drawPanel = new DrawPanel();
 	
-	public void paintComponent(Graphics g){
-		thread.start();
-	    try {
-	        Image img = ImageIO.read(new File("map.jpg"));
-	        g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
-	        for(int i = 0; i<1000; i++) {
-	        	
-					//thread.sleep(20);
-					g.drawImage(voiture, voiturex, 200,null);
-			        voiturex = voiturex+5;
-				
-		        
+	
+	public PanneauSimulateur() {
+		
+		ActionListener listener = new AbstractAction() {
+	        public void actionPerformed(ActionEvent e) {
+	            if (x >= D_W) {
+	                x = 0;
+	                drawPanel.repaint();
+	            } else {
+	                x += 10;
+	                drawPanel.repaint();
+	            }
 	        }
-	      } catch (IOException e) {
-	        e.printStackTrace();
-	                 
-	  } 
+	    };
+	    Timer timer = new Timer(100, listener);
+	    timer.start();
+	    	add(drawPanel);
+
+	    	pack();
+	    	setDefaultCloseOperation(EXIT_ON_CLOSE);
+	    	setLocationRelativeTo(null);
+	    	setVisible(true);
 	}
+	
+
+	private class DrawPanel extends JPanel {
+
+        protected void paintComponent(Graphics g) {
+        	
+			try {
+			Image img = ImageIO.read(new File("map.jpg"));
+			
+	        g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+            g.setColor(Color.GREEN);
+            g.fillRect(x, y, 30, 15);
+            
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+        }
+
+        public Dimension getPreferredSize() {
+            return new Dimension(D_W, D_H);
+        }
+    }
+
 }
+	    
+
 
 
